@@ -9,15 +9,30 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { AuthGuard } from './auth/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
+import { User } from './users/users.entity';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
     ProductsModule,
     AuthModule,
+    UsersModule,
     ThrottlerModule.forRoot([{
       ttl: 60000,
       limit: 10,
-    }])
+    }]),
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: 'malle2002',
+      database: 'products-catalog',
+      entities: [User],
+      synchronize: true,
+    })
   ],
   controllers: [AppController, ProductsController],
   providers: [
@@ -30,6 +45,7 @@ import { AuthModule } from './auth/auth.module';
   ],
 })
 export class AppModule implements NestModule{
+  constructor(private dataSource: DataSource) {}
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LoggerMiddleware)

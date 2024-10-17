@@ -15,7 +15,7 @@ import {
   
     async canActivate(context: ExecutionContext): Promise<boolean> {
       const request = context.switchToHttp().getRequest();
-      const token = this.extractTokenFromHeader(request);
+      const token = await this.extractTokenFromHeader(request);
       if (!token) {
         throw new UnauthorizedException();
       }
@@ -25,8 +25,7 @@ import {
           {
             secret: jwtConstants.secret
           }
-        );
-        console.log('Decoded payload:', payload);
+        );  
         // 💡 We're assigning the payload to the request object here
         // so that we can access it in our route handlers
         request['user'] = payload;
