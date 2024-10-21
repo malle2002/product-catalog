@@ -1,10 +1,8 @@
-
 export class CreateProductDto {
-    name: string;
-    quantity: number;
     category: string;
-    companyProduced: string;
+    quantity: number;
+    retailer: string;
     description: string;
     price: number;
+    name: string;
 }
-  

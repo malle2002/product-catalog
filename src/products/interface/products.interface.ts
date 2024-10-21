@@ -2,7 +2,7 @@ export interface Product {
     name: string;
     quantity: number;
     category: string;
-    companyProduced: string;
+    retailer: string;
     description: string;
     price: number;
     dateCreated: Date;
